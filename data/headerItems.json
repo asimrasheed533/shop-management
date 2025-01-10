@@ -1,0 +1,22 @@
+{
+  "Products": [
+    {
+      "key": "name",
+      "name": "Product Name"
+    },
+    { "key": "quantity", "name": "Quantity" },
+    { "key": "price", "name": "Price" },
+    { "key": "status", "name": "Status" }
+  ],
+  "Orders": [
+    { "key": "name", "name": "Order Name" },
+
+    { "key": "quantity", "name": "Quantity" },
+    { "key": "price", "name": "Price" },
+    { "key": "status", "name": "Status" }
+  ],
+  "Categories": [
+    { "key": "image", "name": " Image" },
+    { "key": "name", "name": " Name" }
+  ]
+}
