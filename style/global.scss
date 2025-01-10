@@ -1,0 +1,20 @@
+:root {
+  --white: #f9f9f9;
+  --blue: #212b36;
+  --gray: #343b44;
+  --golden: #f2a734;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  background-color: var(--white);
+}

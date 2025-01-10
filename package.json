@@ -16,7 +16,9 @@
     "next": "15.1.4",
     "nuqs": "^2.3.0",
     "react": "^19.0.0",
+    "react-click-away-listener": "^2.3.0",
     "react-dom": "^19.0.0",
+    "sass": "^1.83.1",
     "swr": "^2.3.0"
   },
   "devDependencies": {
