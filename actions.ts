@@ -6,6 +6,40 @@ import { redirect } from "next/navigation";
 import fs from "fs/promises";
 import { randomBytes } from "crypto";
 import nodemailer from "nodemailer";
+import { baseURL } from "./config";
+
+export async function setPassword(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (password !== confirmPassword) {
+    return {
+      ...prevState,
+      passwordError: "Passwords do not match",
+      status: "error",
+    };
+  }
+
+  const hashedPassword = await bcryptjs.hash(password, 10);
+
+  await prisma.user.update({
+    // data: {
+    //   password: hashedPassword,
+    // },
+  });
+
+  return {
+    status: "ok",
+    error: "",
+  };
+}
+
 export async function register(
   prevState: {
     status: string | null;
@@ -295,11 +329,6 @@ export async function createEmployee(
       pass: "jlwxruzmsqfozshx",
     },
   });
-
-  const baseURL =
-    process.env.NODE_ENV === "production"
-      ? "http://localhost:3000"
-      : "https://shop-management-zeta.vercel.app";
 
   const resetLink = `${baseURL}/set-password?token=${token}`;
   await transporter.sendMail({
