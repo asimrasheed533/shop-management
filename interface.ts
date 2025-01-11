@@ -37,3 +37,17 @@ export interface ILinks {
     preloadLink?: string;
   }[];
 }
+
+export interface IInput {
+  name: string;
+  label: string;
+  id?: string;
+  value?: string;
+  type?: string;
+  error?: string;
+  onChange?: (e: any) => void;
+  autoFocus?: boolean;
+  required?: boolean;
+  style?: CSSProperties;
+  disabled?: boolean;
+}
