@@ -58,13 +58,16 @@ export default function AddEmployee() {
                 marginBottom: "12px",
               }}
             >
-              <option value="" disabled>
+              <option value="status" disabled>
                 Select Status
               </option>
               <option value="active">Active</option>
               <option value="deactive">DeActive</option>
             </select>
             <Input label="Salary" type="number" name="salary" required />
+          </div>
+          <div className="input__row">
+            <Input label="Phone" type="text" name="phone" />
           </div>
         </form>
       </div>
