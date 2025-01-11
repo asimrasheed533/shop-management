@@ -5,7 +5,8 @@
       "name": "Product Name"
     },
     { "key": "image", "name": " Image" },
-    { "key": "price", "name": "Price" }
+    { "key": "price", "name": "Price" },
+    { "key": "created_at", "name": "Created At" }
   ],
   "Orders": [
     { "key": "name", "name": "Order Name" },
@@ -15,8 +16,9 @@
     { "key": "status", "name": "Status" }
   ],
   "Categories": [
+    { "key": "name", "name": " Name" },
     { "key": "image", "name": " Image" },
-    { "key": "name", "name": " Name" }
+    { "key": "created_at", "name": "Created At" }
   ],
   "Employees": [
     { "key": "name", "name": "Employee Name" },

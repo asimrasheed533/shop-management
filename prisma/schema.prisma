@@ -54,7 +54,7 @@ id        String       @id @default(cuid()) @map("_id")
 model Category {
 id        String       @id @default(cuid()) @map("_id")
   name      String?
-  img       String?  
+  image       String?  
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Product   Product[]

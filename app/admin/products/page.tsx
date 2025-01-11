@@ -51,7 +51,7 @@ export default function Products() {
           totalPages={10}
         >
           {data?.products?.map((item) => (
-            <div className="listing__page__table__content__row">
+            <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
@@ -66,7 +66,7 @@ export default function Products() {
               <div className="listing__page__table__content__row__entry">
                 <Image
                   className="listing__page__table__content__row__entry__img"
-                  src={item.image ?? "/default-image.png"}
+                  src={item.image || "/avatar.png"}
                   width={120}
                   height={120}
                   alt="category"
@@ -75,6 +75,9 @@ export default function Products() {
 
               <div className="listing__page__table__content__row__entry">
                 {item.price}
+              </div>
+              <div className="listing__page__table__content__row__entry">
+                {item.createdAt.toLocaleDateString()}
               </div>
             </div>
           ))}

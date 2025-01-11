@@ -199,7 +199,7 @@ export async function createCategory(
   await prisma.category.create({
     data: {
       name,
-      img: pictureUrl,
+      image: pictureUrl,
     },
   });
 
@@ -272,14 +272,31 @@ export async function createProduct(
 export async function getProducts() {
   const products = await prisma.product.findMany({
     select: {
+      id: true,
       title: true,
       price: true,
       image: true,
+      createdAt: true,
     },
   });
 
   return {
     products,
+    status: "ok",
+  };
+}
+export async function getCategories() {
+  const category = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      createdAt: true,
+    },
+  });
+
+  return {
+    category,
     status: "ok",
   };
 }

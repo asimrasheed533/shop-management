@@ -1,17 +1,22 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-import { Categories as data } from "@/data/mocks";
-
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
+import useGetAction from "@/hooks/useGetAction";
+import { getCategories } from "@/actions";
 export default function Categories() {
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(3);
+
+  const { data } = useGetAction({
+    key: "category",
+    action: getCategories,
+  });
   return (
     <>
       <div className="listing__page">
@@ -43,7 +48,7 @@ export default function Categories() {
           selectedRows={selectedRows}
           totalPages={10}
         >
-          {data?.map((item) => (
+          {data?.category.map((item) => (
             <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
@@ -56,13 +61,18 @@ export default function Categories() {
               <div className="listing__page__table__content__row__entry">
                 {item.name}
               </div>
-              <Image
-                className="listing__page__table__content__row__entry__img"
-                src={item.image}
-                width={120}
-                height={120}
-                alt="category"
-              />
+              <div className="listing__page__table__content__row__entry">
+                <Image
+                  className="listing__page__table__content__row__entry__img"
+                  src={item.image || "/avatar.png"}
+                  width={120}
+                  height={120}
+                  alt="product"
+                />
+              </div>
+              <div className="listing__page__table__content__row__entry">
+                {item.createdAt.toLocaleDateString()}
+              </div>
             </div>
           ))}
         </ListingTable>
