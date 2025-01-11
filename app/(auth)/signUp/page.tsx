@@ -56,6 +56,7 @@ export default function SignUp() {
           </div>
           <div className="input__row__login">
             <select
+              name="role"
               style={{
                 width: "100%",
                 height: "40px",
@@ -64,8 +65,6 @@ export default function SignUp() {
                 borderRadius: "5px",
                 borderColor: "#ccc",
               }}
-              value={role}
-              onChange={(e) => setRole(e.target.value as "ADMIN" | "EMPLOYEE")}
             >
               <option value="EMPLOYEE">EMPLOYEE</option>
               <option value="ADMIN">ADMIN</option>
