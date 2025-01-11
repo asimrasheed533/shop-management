@@ -1,15 +1,22 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-import { Employees as data } from "@/data/mocks";
+// import { Employees as data } from "@/data/mocks";
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import ListingCheckbox from "@/components/ListingCheckbox";
+import useGetAction from "@/hooks/useGetAction";
+import { getEmployee } from "@/actions";
 export default function Employee() {
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(3);
+
+  const { data } = useGetAction({
+    key: "category",
+    action: getEmployee,
+  });
   return (
     <>
       <div className="listing__page">
@@ -41,8 +48,8 @@ export default function Employee() {
           selectedRows={selectedRows}
           totalPages={10}
         >
-          {data?.map((item) => (
-            <div className="listing__page__table__content__row">
+          {data?.employee?.map((item) => (
+            <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
@@ -62,9 +69,7 @@ export default function Employee() {
               >
                 {item.email}
               </div>
-              <div className="listing__page__table__content__row__entry">
-                {item.phone}
-              </div>
+
               <div className="listing__page__table__content__row__entry">
                 {item.salary}
               </div>
