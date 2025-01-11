@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import usePostAction from "@/hooks/usePostAction";
 import Input from "@/components/Input";
+import { signInAction } from "@/actions";
 
 export default function SignIn() {
   const router = useRouter();
@@ -18,11 +19,11 @@ export default function SignIn() {
       passwordError: null,
     },
     onError() {
-      toast.error("Account creation failed");
+      toast.error("Account signIn failed");
     },
     onSuccess: () => {
-      toast.success("Account created successfully");
-      router.push("/admin");
+      toast.success("LogIn successfully");
+      router.refresh();
     },
   });
   return (

@@ -11,6 +11,7 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.17.0",
@@ -22,6 +23,7 @@
     "react-dom": "^19.0.0",
     "react-spinners": "^0.15.0",
     "react-toastify": "^11.0.2",
+    "recharts": "^2.15.0",
     "sass": "^1.83.1",
     "swr": "^2.3.0"
   },

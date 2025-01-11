@@ -1,11 +1,17 @@
 "use client";
 
+import { logout } from "@/actions";
 import { useBackLocation } from "@/hooks/useBackLocation";
+import usePostAction from "@/hooks/usePostAction";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import MoonLoader from "react-spinners/MoonLoader";
 
 export default function DashboardHeader() {
+  const { actionCallback, isPending } = usePostAction({
+    action: logout,
+  });
   const pathname = usePathname();
   const backLocation = useBackLocation();
   const router = useRouter();
@@ -74,6 +80,13 @@ export default function DashboardHeader() {
           {formattedTitle}
         </div>
       </div>
+
+      <button
+        className="dashboard__main__header__logout"
+        onClick={actionCallback}
+      >
+        {isPending ? <MoonLoader color="#fff" size={16} /> : "LogOut"}
+      </button>
     </div>
   );
 }

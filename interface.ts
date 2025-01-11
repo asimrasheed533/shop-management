@@ -51,3 +51,32 @@ export interface IInput {
   style?: CSSProperties;
   disabled?: boolean;
 }
+export interface IListingAction {
+  name: string;
+  onClick: () => void;
+  icon: ReactNode;
+  disabled?: boolean;
+}
+export interface IListingTable {
+  style?: Object;
+  children: ReactNode;
+  actions?: IListingAction[];
+  selectedRows?: string[];
+  setSelectedRows?: (value: string[]) => void;
+  totalPages?: number;
+  sortData?: {
+    key: string;
+    order: "asc" | "desc";
+  };
+  setSortData?: (value: { key: string; order: "asc" | "desc" }) => void;
+  headerItems: {
+    key: string;
+    name: string;
+    hasImage?: boolean;
+    style?: CSSProperties;
+  }[];
+  data: any[];
+  onAdd?: () => void;
+  isFetchingData?: boolean;
+  noCheckbox?: boolean;
+}

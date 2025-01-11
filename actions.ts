@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import prisma from "./lib/prisma";
 import bcryptjs from "bcryptjs";
+import { redirect } from "next/navigation";
 export async function register(
   prevState: {
     status: string | null;
@@ -72,8 +73,9 @@ export async function register(
 
 export async function signInAction(
   prevState: {
+    emailError: string | null;
+    passwordError: string | null;
     status: string | null;
-    error: string;
   },
   formData: FormData
 ) {
@@ -85,7 +87,13 @@ export async function signInAction(
     where: {
       email,
     },
+    select: {
+      id: true,
+      password: true,
+      role: true,
+    },
   });
+
   if (!user) {
     return { ...prevState, emailError: "User not found", status: "error" };
   }
@@ -100,10 +108,47 @@ export async function signInAction(
     };
   }
 
-  (await cookies()).set("token", user.id, { path: "/admin" });
+  (await cookies()).set(
+    "token",
+    JSON.stringify({
+      id: user.id,
+      role: user.role,
+    }),
+    { path: "/" }
+  );
+
   return {
     ...prevState,
     status: "ok",
     error: "",
+  };
+}
+
+export async function logout() {
+  (await cookies()).set("token", "", { path: "/", expires: new Date(0) });
+  return redirect("/signIn");
+}
+
+export async function category(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const name = formData.get("name") as string;
+  if (!name) {
+    return { ...prevState, nameError: "Name is required", status: "error" };
+  }
+
+  await prisma.category.create({
+    data: {
+      name,
+    },
+  });
+  return {
+    status: "ok",
+    error: "",
+    name: "",
   };
 }

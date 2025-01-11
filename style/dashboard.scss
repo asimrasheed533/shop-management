@@ -46,6 +46,17 @@
   height: calc(100% - 82px - 53px - 195px - 32px);
   padding: 0 1em;
 }
+.dashboard__main__header__logout {
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--golden);
+}
 .dashboard__main__header__title__text {
   color: var(--golden);
   font-weight: 300;
@@ -73,7 +84,7 @@
   padding: 0;
   border-radius: 50px;
   border: none;
-  background-color: var(--whiteShadow);
+  background-color: var(--white);
 }
 .dashboard__main__header__title__back svg {
   width: 18px;
@@ -233,7 +244,7 @@
   gap: 1em;
   border-radius: 12px;
   height: calc(100% - 10px);
-  background-color: var(--lightBlue);
+  background-color: var(--blue);
   padding: 1.5em;
 }
 .input__row {
@@ -249,7 +260,7 @@
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  background-color: var(--lightBlue);
+  background-color: var(--blue);
   border-radius: 12px;
   padding: 1.5em;
   height: 100%;
