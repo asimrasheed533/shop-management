@@ -42,7 +42,7 @@ export default function Employee() {
           totalPages={10}
         >
           {data?.map((item) => (
-            <div className="listing__page__table__content__row" key={item.id}>
+            <div className="listing__page__table__content__row">
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
