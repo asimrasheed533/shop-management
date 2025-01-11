@@ -28,11 +28,9 @@ export async function setPassword(
 
   const hashedPassword = await bcryptjs.hash(password, 10);
 
-  await prisma.user.update({
-    // data: {
-    //   password: hashedPassword,
-    // },
-  });
+  // await prisma.user.update({
+
+  // });
 
   return {
     status: "ok",
