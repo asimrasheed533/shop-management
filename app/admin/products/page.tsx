@@ -51,7 +51,7 @@ export default function Products() {
           totalPages={10}
         >
           {data?.products?.map((item) => (
-            <div className="listing__page__table__content__row" key={item.id}>
+            <div className="listing__page__table__content__row">
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
