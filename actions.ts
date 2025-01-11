@@ -296,7 +296,12 @@ export async function createEmployee(
     },
   });
 
-  const resetLink = `https://your-domain.com/set-password?token=${token}`;
+  const baseURL =
+    process.env.NODE_ENV === "production"
+      ? "http://localhost:3000"
+      : "https://shop-management-zeta.vercel.app";
+
+  const resetLink = `${baseURL}/set-password?token=${token}`;
   await transporter.sendMail({
     from: "devscot@gmail.com",
     to: email,
