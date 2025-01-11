@@ -1,14 +1,12 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-import { products as data } from "@/data/mocks";
-
+import { Employees as data } from "@/data/mocks";
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import ListingCheckbox from "@/components/ListingCheckbox";
-import Image from "next/image";
-export default function Products() {
+export default function Employee() {
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(3);
@@ -33,18 +31,22 @@ export default function Products() {
                   fill="currentColor"
                 />
               </svg>
-              Add Product
+              Add Employee
             </Link>
           </div>
         </div>
         <ListingTable
           data={[]}
-          headerItems={headerItems.Products}
+          headerItems={headerItems.Employees}
           selectedRows={selectedRows}
           totalPages={10}
         >
           {data?.map((item) => (
-            <div className="listing__page__table__content__row" key={item.id}>
+            <Link
+              className="listing__page__table__content__row"
+              href={pathname + "/" + item.id}
+              key={item.id}
+            >
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
@@ -56,20 +58,24 @@ export default function Products() {
               <div className="listing__page__table__content__row__entry">
                 {item.name}
               </div>
-              <div className="listing__page__table__content__row__entry">
-                <Image
-                  className="listing__page__table__content__row__entry__img"
-                  src={item.image}
-                  width={120}
-                  height={120}
-                  alt="category"
-                />
+              <div
+                className="listing__page__table__content__row__entry"
+                style={{
+                  width: "300px",
+                }}
+              >
+                {item.email}
               </div>
-
               <div className="listing__page__table__content__row__entry">
-                {item.price}
+                {item.phone}
               </div>
-            </div>
+              <div className="listing__page__table__content__row__entry">
+                {item.salary}
+              </div>
+              <div className="listing__page__table__content__row__entry">
+                {item.status}
+              </div>
+            </Link>
           ))}
         </ListingTable>
       </div>

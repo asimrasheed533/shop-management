@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import prisma from "./lib/prisma";
 import bcryptjs from "bcryptjs";
 import { redirect } from "next/navigation";
+import fs from "fs/promises";
 export async function register(
   prevState: {
     status: string | null;
@@ -129,7 +130,7 @@ export async function logout() {
   return redirect("/signIn");
 }
 
-export async function category(
+export async function createCategory(
   prevState: {
     status: string | null;
     error: string;
@@ -137,18 +138,143 @@ export async function category(
   formData: FormData
 ) {
   const name = formData.get("name") as string;
+  const image = formData.get("image") as File;
+
   if (!name) {
     return { ...prevState, nameError: "Name is required", status: "error" };
   }
 
+  let pictureUrl = "";
+
+  if (image && image.name !== "undefined") {
+    const fileName = image.name;
+    const filePath = `./public/uploads/${fileName}`;
+
+    try {
+      await fs.access("./public/uploads");
+    } catch {
+      await fs.mkdir("./public/uploads");
+    }
+
+    const fileBuffer = await image.arrayBuffer();
+
+    await fs.writeFile(filePath, Buffer.from(fileBuffer));
+
+    pictureUrl = filePath.replace("./public", "");
+  }
+
+  // Create the category in the database
   await prisma.category.create({
     data: {
       name,
+      img: pictureUrl,
     },
   });
+
   return {
+    ...prevState,
     status: "ok",
     error: "",
-    name: "",
+  };
+}
+export async function createProduct(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const title = formData.get("title") as string;
+  const price = parseFloat(formData.get("price") as string) || 0;
+  const categoryId = formData.get("categoryId") as string;
+  const description = formData.get("description") as string;
+  const image = formData.get("image") as File;
+
+  if (!title) {
+    return {
+      ...prevState,
+      status: "error",
+      error: "Product title is required",
+    };
+  }
+
+  if (!categoryId) {
+    return { ...prevState, status: "error", error: "Category ID is required" };
+  }
+
+  let pictureUrl = "";
+
+  if (image && image.name !== "undefined") {
+    const fileName = image.name;
+    const filePath = `./public/uploads/${fileName}`;
+
+    try {
+      await fs.access("./public/uploads");
+    } catch {
+      await fs.mkdir("./public/uploads");
+    }
+
+    const fileBuffer = await image.arrayBuffer();
+
+    await fs.writeFile(filePath, Buffer.from(fileBuffer));
+
+    pictureUrl = filePath.replace("./public", "");
+  }
+
+  await prisma.product.create({
+    data: {
+      title,
+      price,
+      description,
+      image: pictureUrl,
+      categoryId,
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
+  };
+}
+
+export async function createEmployee(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const salary = Number(formData.get("salary"));
+  const status = formData.get("status") as string;
+  const password = formData.get("password") as string;
+  const role = formData.get("role") as "ADMIN" | "EMPLOYEE";
+
+  if (!name || !email || !salary || !status || !password || !role) {
+    return {
+      ...prevState,
+      error: "All fields are required",
+      status: "error",
+    };
+  }
+
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      salary,
+      status,
+      role,
+      password: await bcryptjs.hash(password, 10),
+      startedAt: new Date(),
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
   };
 }

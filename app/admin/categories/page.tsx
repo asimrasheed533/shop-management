@@ -1,6 +1,7 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
 import { Categories as data } from "@/data/mocks";
+
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -43,11 +44,7 @@ export default function Categories() {
           totalPages={10}
         >
           {data?.map((item) => (
-            <Link
-              className="listing__page__table__content__row"
-              href={pathname + "/" + item.id}
-              key={item.id}
-            >
+            <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
@@ -66,7 +63,7 @@ export default function Categories() {
                 height={120}
                 alt="category"
               />
-            </Link>
+            </div>
           ))}
         </ListingTable>
       </div>

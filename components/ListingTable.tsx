@@ -3,6 +3,7 @@ import "@/style/listing.scss";
 import { IListingTable } from "@/interface";
 import ListingActionBar from "./ListingActionBar";
 import ListingHeaderEntry from "./ListingHeaderEntry";
+import ListingCheckbox from "./ListingCheckbox";
 
 export default function ListingTable({
   style,
@@ -20,6 +21,23 @@ export default function ListingTable({
   return (
     <div className="listing__page__table" style={style}>
       <div className="listing__page__table__header">
+        {selectedRows && !noCheckbox && (
+          <ListingHeaderEntry className="checkbox">
+            <ListingCheckbox
+              checked={selectedRows.length === data?.length && data?.length > 0}
+              partiallyChecked={
+                selectedRows.length > 0 && selectedRows.length < data.length
+              }
+              onClick={() => {
+                if (selectedRows.length === data?.length) {
+                  setSelectedRows([]);
+                } else {
+                  setSelectedRows(data?.map((item) => item.id));
+                }
+              }}
+            />
+          </ListingHeaderEntry>
+        )}
         {headerItems?.map((item) => (
           <ListingHeaderEntry
             key={item.key}

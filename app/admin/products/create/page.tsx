@@ -2,16 +2,16 @@
 import "@/style/dashboard.scss";
 import Input from "@/components/Input";
 import usePostAction from "@/hooks/usePostAction";
-import { createCategory } from "@/actions";
+import { createCategory, createProduct } from "@/actions";
 import { useState } from "react";
 
-export default function AddCategories() {
+export default function AddProducts() {
   const [preview, setPreview] = useState<string | null>(null);
   const { action, isPending, data } = usePostAction({
-    action: createCategory,
+    action: createProduct,
     defaultState: { error: "" },
     onSuccess: () => {
-      alert("Category added successfully");
+      alert("Product added successfully");
     },
   });
 
@@ -26,7 +26,21 @@ export default function AddCategories() {
             gap: 12,
           }}
         >
-          <div className="input__row">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="listing__page__header__actions__button"
+          >
+            {isPending ? "Loading..." : "Add Category"}
+          </button>
+          <div
+            className="input__row"
+            style={{
+              display: "flex",
+              alignContent: "flex-start",
+              justifyContent: "flex-start",
+            }}
+          >
             <div style={{ textAlign: "center" }}>
               {preview ? (
                 <img
@@ -60,16 +74,19 @@ export default function AddCategories() {
                 type="file"
                 accept="image/*"
                 style={{ marginBottom: "10px" }}
+                name="image"
               />
             </div>
-            <Input label="Category Name" type="text" name="name" />
-            <button
-              type="submit"
-              disabled={isPending}
-              className="listing__page__header__actions__button"
-            >
-              {isPending ? "Loading..." : "Add Category"}
-            </button>
+          </div>
+          <div className="input__row">
+            <Input label="Product Title" type="text" name="title" required />
+            <Input label="Category Category" type="text" name="categoryId" />
+          </div>
+          <div className="input__row">
+            <Input label="Price" type="text" name="price" required />
+          </div>
+          <div className="input__row">
+            <Input label="Description" type="text" name="description" />
           </div>
         </form>
       </div>

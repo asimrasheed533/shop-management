@@ -4,9 +4,8 @@
       "key": "name",
       "name": "Product Name"
     },
-    { "key": "quantity", "name": "Quantity" },
-    { "key": "price", "name": "Price" },
-    { "key": "status", "name": "Status" }
+    { "key": "image", "name": " Image" },
+    { "key": "price", "name": "Price" }
   ],
   "Orders": [
     { "key": "name", "name": "Order Name" },
@@ -18,5 +17,13 @@
   "Categories": [
     { "key": "image", "name": " Image" },
     { "key": "name", "name": " Name" }
+  ],
+  "Employees": [
+    { "key": "name", "name": "Employee Name" },
+    { "key": "email", "name": "Email", "style": { "width": "300px" } },
+
+    { "key": "phone", "name": "Phone" },
+    { "key": "salary", "name": "Salary" },
+    { "key": "status", "name": "Status" }
   ]
 }

@@ -39,11 +39,8 @@ model Customer {
 model Product {
 id        String       @id @default(cuid()) @map("_id")
   title       String?
-  author      String?
-  brand       String?
   price       Float       @default(0)
-  img         String?    
-  stock       Int         @default(0)
+  image         String?    
   category    Category    @relation(fields: [categoryId], references: [id])
   categoryId  String
   description String?     
