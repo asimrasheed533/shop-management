@@ -300,6 +300,23 @@ export async function getCategories() {
     status: "ok",
   };
 }
+export async function getEmployee() {
+  const employee = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      salary: true,
+      status: true,
+      createdAt: true,
+    },
+  });
+
+  return {
+    employee,
+    status: "ok",
+  };
+}
 
 export async function createEmployee(
   prevState: {
