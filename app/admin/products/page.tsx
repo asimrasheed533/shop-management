@@ -1,6 +1,6 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-import { products as data } from "@/data/mocks";
+// import { products as data } from "@/data/mocks";
 
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
@@ -8,10 +8,17 @@ import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
+import useGetAction from "@/hooks/useGetAction";
+import { getProducts } from "@/actions";
 export default function Products() {
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(3);
+
+  const { data } = useGetAction({
+    key: "products",
+    action: getProducts,
+  });
   return (
     <>
       <div className="listing__page">
@@ -43,7 +50,7 @@ export default function Products() {
           selectedRows={selectedRows}
           totalPages={10}
         >
-          {data?.map((item) => (
+          {data?.products?.map((item) => (
             <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
@@ -54,12 +61,12 @@ export default function Products() {
               </div>
 
               <div className="listing__page__table__content__row__entry">
-                {item.name}
+                {item.title}
               </div>
               <div className="listing__page__table__content__row__entry">
                 <Image
                   className="listing__page__table__content__row__entry__img"
-                  src={item.image}
+                  src={item.image ?? "/default-image.png"}
                   width={120}
                   height={120}
                   alt="category"

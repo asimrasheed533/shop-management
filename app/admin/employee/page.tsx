@@ -42,11 +42,7 @@ export default function Employee() {
           totalPages={10}
         >
           {data?.map((item) => (
-            <Link
-              className="listing__page__table__content__row"
-              href={pathname + "/" + item.id}
-              key={item.id}
-            >
+            <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
                   partiallyChecked={false}
@@ -75,7 +71,7 @@ export default function Employee() {
               <div className="listing__page__table__content__row__entry">
                 {item.status}
               </div>
-            </Link>
+            </div>
           ))}
         </ListingTable>
       </div>

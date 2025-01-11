@@ -58,7 +58,7 @@ export default function AddEmployee() {
                 marginBottom: "12px",
               }}
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Select Status
               </option>
               <option value="active">Active</option>

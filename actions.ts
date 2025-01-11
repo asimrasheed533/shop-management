@@ -4,6 +4,8 @@ import prisma from "./lib/prisma";
 import bcryptjs from "bcryptjs";
 import { redirect } from "next/navigation";
 import fs from "fs/promises";
+import { randomBytes } from "crypto";
+import nodemailer from "nodemailer";
 export async function register(
   prevState: {
     status: string | null;
@@ -162,8 +164,6 @@ export async function createCategory(
 
     pictureUrl = filePath.replace("./public", "");
   }
-
-  // Create the category in the database
   await prisma.category.create({
     data: {
       name,
@@ -237,6 +237,20 @@ export async function createProduct(
     error: "",
   };
 }
+export async function getProducts() {
+  const products = await prisma.product.findMany({
+    select: {
+      title: true,
+      price: true,
+      image: true,
+    },
+  });
+
+  return {
+    products,
+    status: "ok",
+  };
+}
 
 export async function createEmployee(
   prevState: {
@@ -249,16 +263,15 @@ export async function createEmployee(
   const email = formData.get("email") as string;
   const salary = Number(formData.get("salary"));
   const status = formData.get("status") as string;
-  const password = formData.get("password") as string;
-  const role = formData.get("role") as "ADMIN" | "EMPLOYEE";
 
-  if (!name || !email || !salary || !status || !password || !role) {
+  if (!name || !email || !salary || !status) {
     return {
       ...prevState,
       error: "All fields are required",
       status: "error",
     };
   }
+  const token = randomBytes(32).toString("hex");
 
   await prisma.user.create({
     data: {
@@ -266,10 +279,32 @@ export async function createEmployee(
       email,
       salary,
       status,
-      role,
-      password: await bcryptjs.hash(password, 10),
       startedAt: new Date(),
+      password: "",
+      role: "EMPLOYEE",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
+  });
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: "asimrasheed442@gmail.com",
+      pass: "jlwxruzmsqfozshx",
+    },
+  });
+
+  const resetLink = `https://your-domain.com/set-password?token=${token}`;
+  await transporter.sendMail({
+    from: "devscot@gmail.com",
+    to: email,
+    subject: "Set Up Your Password",
+    html: `<p>Hi ${name},</p>
+           <p>Please set up your password by clicking the link below:</p>
+           <a href="${resetLink}">Set Password</a>
+           <p>If you did not expect this email, please ignore it.</p>`,
   });
 
   return {

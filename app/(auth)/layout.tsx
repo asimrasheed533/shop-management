@@ -5,16 +5,14 @@ export default async function AuthLayout({ children }: any) {
   const token = (await cookies()).get("token")?.value;
 
   if (token) {
-    try {
-      const user = JSON.parse(token);
-      if (user.role === "admin") {
-        redirect("/admin");
-      } else {
-        redirect("/employee");
-      }
-    } catch (error) {
-      console.error("Invalid token:", error);
+    const user = JSON.parse(token);
+
+    if (user.role === "ADMIN") {
+      return redirect("/admin");
+    } else if (user.role === "EMPLOYEE") {
+      return redirect("/employee");
     }
   }
+
   return <>{children}</>;
 }
