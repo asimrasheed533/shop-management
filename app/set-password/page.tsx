@@ -1,22 +1,27 @@
 "use client";
 import { setPassword } from "@/actions";
 import usePostAction from "@/hooks/usePostAction";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import React from "react";
+import MoonLoader from "react-spinners/MoonLoader";
 import { toast } from "react-toastify";
 
 export default function page() {
+  const { userId } = useParams<{ userId: string }>();
+
   const { action, isPending } = usePostAction({
     action: setPassword,
     defaultState: { error: "" },
     onError() {
-      toast.error("Account signIn failed");
+      toast.error("Account set-password failed");
     },
     onSuccess: () => {
-      toast.success("LogIn successfully");
+      toast.success("set-password successfully");
       redirect("/signIn");
     },
   });
+
+  console.log("userid", userId);
   return (
     <>
       <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
@@ -25,6 +30,7 @@ export default function page() {
           <div style={{ marginBottom: "15px" }}>
             <label htmlFor="password">Password:</label>
             <input
+              name="password"
               type="password"
               id="password"
               required
@@ -40,6 +46,7 @@ export default function page() {
           <div style={{ marginBottom: "15px" }}>
             <label htmlFor="confirmPassword">Confirm Password:</label>
             <input
+              name="confirmPassword"
               type="password"
               id="confirmPassword"
               required
@@ -51,6 +58,7 @@ export default function page() {
               }}
             />
           </div>
+          <input name="userId" type="hidden" value={userId} />
 
           <button
             type="submit"
@@ -62,7 +70,7 @@ export default function page() {
               cursor: "pointer",
             }}
           >
-            Submit
+            {isPending ? <MoonLoader color="#fff" size={16} /> : "Set Password"}
           </button>
         </form>
       </div>
