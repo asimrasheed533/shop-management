@@ -5,19 +5,31 @@ import headerItems from "@/data/headerItems.json";
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
 import useGetAction from "@/hooks/useGetAction";
-import { getProducts } from "@/actions";
+import { deleteProduct, getProducts } from "@/actions";
+import usePostAction from "@/hooks/usePostAction";
+import { toast } from "react-toastify";
 export default function Products() {
+  const router = useRouter();
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(3);
 
-  const { data } = useGetAction({
+  const { data, mutate } = useGetAction({
     key: "products",
     action: getProducts,
+  });
+
+  const { actionCallback } = usePostAction({
+    action: deleteProduct,
+    onSuccess: () => {
+      toast.success("Order Placed successfully");
+      router.refresh();
+      mutate();
+    },
   });
   return (
     <>
@@ -52,13 +64,33 @@ export default function Products() {
         >
           {data?.products?.map((item) => (
             <div className="listing__page__table__content__row" key={item.id}>
-              <div className="listing__page__table__content__row__entry checkbox">
-                <ListingCheckbox
-                  partiallyChecked={false}
-                  checked={false}
-                  onClick={() => {}}
-                />
-              </div>
+              <button
+                onClick={() => actionCallback(item.id)}
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                className="listing__page__table__content__row__entry checkbox"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-trash-2"
+                >
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
 
               <div className="listing__page__table__content__row__entry">
                 {item.title}
