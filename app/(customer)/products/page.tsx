@@ -2,8 +2,17 @@
 import PageBanner from "@/components/PageBanner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+const products = [
+  { id: 1, image: "/logoMe.png", title: "Product 1", price: 200 },
+  { id: 2, image: "/logoMe.png", title: "Product 2", price: 300 },
+  { id: 3, image: "/logoMe.png", title: "Product 3", price: 400 },
+];
 export default function Products() {
+  // const { data } = useGetAction({
+  //   key: "products",
+  //   action: getProducts,
+  // });
+
   return (
     <>
       <PageBanner title="Products" />
@@ -22,13 +31,20 @@ export default function Products() {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "space-around",
-          gap: "20px",
+          justifyContent: "center",
+          gap: "30px",
           width: "100%",
           marginBottom: "30px",
         }}
       >
-        <ProductsItem image="/logoMe.png" name="Product 1" price={200} />
+        {products.map((product) => (
+          <ProductsItem
+            key={product.id}
+            image={product.image ?? "/defaultImage.png"}
+            name={product.title ?? "Untitled"}
+            price={product.price}
+          />
+        ))}
       </div>
     </>
   );
@@ -50,7 +66,7 @@ function ProductsItem({
         className="category__item__image"
         src={image}
         alt="category"
-        width={150}
+        width={200}
         height={150}
       />
       <div className="category__item__name">{name}</div>
