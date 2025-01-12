@@ -25,7 +25,6 @@
     { "key": "email", "name": "Email", "style": { "width": "300px" } },
 
     { "key": "phone", "name": "Phone" },
-    { "key": "salary", "name": "Salary" },
-    { "key": "status", "name": "Status" }
+    { "key": "salary", "name": "Salary" }
   ]
 }

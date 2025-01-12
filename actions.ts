@@ -92,6 +92,7 @@ export async function register(
     data: {
       name,
       email,
+
       password: hashedPassword,
       role: role as "ADMIN" | "EMPLOYEE",
       startedAt: new Date(),
@@ -353,11 +354,47 @@ export async function getCategories() {
     status: "ok",
   };
 }
+
+export async function deleteEmployee(
+  prevState: {
+    status: string | null;
+    error: string;
+    message: string;
+  },
+  employeeId: string
+) {
+  const existingEmployee = await prisma.user.findUnique({
+    where: {
+      id: employeeId,
+    },
+  });
+
+  if (!existingEmployee) {
+    return {
+      ...prevState,
+      status: "error",
+      error: "Employee Not Found",
+    };
+  }
+  await prisma.user.delete({
+    where: {
+      id: employeeId,
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
+  };
+}
+
 export async function getEmployee() {
   const employee = await prisma.user.findMany({
     select: {
       id: true,
       name: true,
+      phone: true,
       email: true,
       salary: true,
       status: true,
@@ -382,6 +419,7 @@ export async function createEmployee(
   const email = formData.get("email") as string;
   const salary = Number(formData.get("salary"));
   const status = formData.get("status") as string;
+  const phone = formData.get("phone") as string;
 
   if (!name || !email || !salary || !status) {
     return {
@@ -397,6 +435,7 @@ export async function createEmployee(
       name,
       email,
       salary,
+      phone,
       status,
       startedAt: new Date(),
       password: "",
