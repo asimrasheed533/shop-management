@@ -1,17 +1,19 @@
 "use client";
+import { getProducts } from "@/actions";
 import PageBanner from "@/components/PageBanner";
+import useGetAction from "@/hooks/useGetAction";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-const products = [
-  { id: 1, image: "/logoMe.png", title: "Product 1", price: 200 },
-  { id: 2, image: "/logoMe.png", title: "Product 2", price: 300 },
-  { id: 3, image: "/logoMe.png", title: "Product 3", price: 400 },
-];
+// const products = [
+//   { id: 1, image: "/logoMe.png", title: "Product 1", price: 200 },
+//   { id: 2, image: "/logoMe.png", title: "Product 2", price: 300 },
+//   { id: 3, image: "/logoMe.png", title: "Product 3", price: 400 },
+// ];
 export default function Products() {
-  // const { data } = useGetAction({
-  //   key: "products",
-  //   action: getProducts,
-  // });
+  const { data: products } = useGetAction({
+    key: "products",
+    action: getProducts,
+  });
 
   return (
     <>
@@ -37,7 +39,7 @@ export default function Products() {
           marginBottom: "30px",
         }}
       >
-        {products.map((product) => (
+        {products?.products?.map((product) => (
           <ProductsItem
             key={product.id}
             image={product.image ?? "/defaultImage.png"}
