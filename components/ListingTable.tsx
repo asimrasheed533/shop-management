@@ -15,7 +15,7 @@ export default function ListingTable({
   return (
     <div className="listing__page__table" style={style}>
       <div className="listing__page__table__header">
-        <div>Delete</div>
+        <div>Action</div>
         {headerItems?.map((item) => (
           <ListingHeaderEntry
             key={item.key}
