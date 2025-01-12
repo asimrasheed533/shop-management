@@ -9,11 +9,11 @@
     { "key": "created_at", "name": "Created At" }
   ],
   "Orders": [
-    { "key": "name", "name": "Order Name" },
-
-    { "key": "quantity", "name": "Quantity" },
+    { "key": "name", "name": "Order Id" },
+    { "key": "customer_name", "name": "Customer Name" },
+    { "key": "total_price", "name": "Total Price" },
     { "key": "price", "name": "Price" },
-    { "key": "status", "name": "Status" }
+    { "key": "created_at", "name": "Created At" }
   ],
   "Categories": [
     { "key": "name", "name": " Name" },

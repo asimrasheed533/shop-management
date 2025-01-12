@@ -167,7 +167,39 @@ export async function logout() {
   (await cookies()).set("token", "", { path: "/", expires: new Date(0) });
   return redirect("/signIn");
 }
+export async function createCustomer(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const phone = formData.get("phone") as string;
+  const address = formData.get("address") as string;
 
+  if (email && phone && address) {
+    return {
+      ...prevState,
+      error: "",
+      status: "ok",
+    };
+  }
+  await prisma.customer.create({
+    data: {
+      name,
+      email,
+      phone,
+      address,
+    },
+  });
+  return {
+    ...prevState,
+    error: "All fields are required",
+    status: "error",
+  };
+}
 export async function createCategory(
   prevState: {
     status: string | null;
@@ -286,6 +318,23 @@ export async function getProducts() {
 
   return {
     products,
+    status: "ok",
+  };
+}
+export async function getOrder() {
+  const orders = await prisma.customer.findMany({
+    select: {
+      id: true,
+      address: true,
+      createdAt: true,
+      email: true,
+      name: true,
+      phone: true,
+    },
+  });
+
+  return {
+    orders,
     status: "ok",
   };
 }
