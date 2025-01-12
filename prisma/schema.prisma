@@ -11,6 +11,7 @@ model User {
   name      String
   email     String    @unique
   phone     String?    @unique
+   token     String?  @unique
   password  String
   startedAt DateTime
   salary    Float
@@ -18,6 +19,7 @@ model User {
   role      Role      @default(EMPLOYEE)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  salaries  Salary[]
 }
 
 
@@ -59,6 +61,16 @@ id        String       @id @default(cuid()) @map("_id")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Product   Product[]
+}
+
+model Salary {
+  id        String   @id @default(cuid()) @map("_id")
+  employee   User  @relation(fields: [employeeId], references: [id])
+  employeeId  String
+  paymentDate      DateTime @default(now())
+  month            Int
+  year             Int
+  amount           Float
 }
 model Order {
 id        String       @id @default(cuid()) @map("_id")
