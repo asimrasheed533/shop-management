@@ -15,8 +15,10 @@ export async function setPassword(
   },
   formData: FormData
 ) {
+  const userId = formData.get("userId") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
+  console.log("FormData received:", Object.fromEntries(formData.entries()));
 
   if (password !== confirmPassword) {
     return {
@@ -28,11 +30,13 @@ export async function setPassword(
 
   const hashedPassword = await bcryptjs.hash(password, 10);
 
-  // await prisma.user.update({
-
-  // });
+  await prisma.user.update({
+    where: { id: userId },
+    data: { password: hashedPassword },
+  });
 
   return {
+    ...prevState,
     status: "ok",
     error: "",
   };
