@@ -15,7 +15,7 @@ export async function setPassword(
   },
   formData: FormData
 ) {
-  const userId = formData.get("userId") as string;
+  const token = formData.get("token") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
   console.log("FormData received:", Object.fromEntries(formData.entries()));
@@ -31,7 +31,7 @@ export async function setPassword(
   const hashedPassword = await bcryptjs.hash(password, 10);
 
   await prisma.user.update({
-    where: { id: userId },
+    where: { id: token },
     data: { password: hashedPassword },
   });
 
@@ -249,7 +249,7 @@ export async function createCategory(
 export async function createProduct(
   prevState: {
     status: string | null;
-    error: string;
+    error: "";
   },
   formData: FormData
 ) {
@@ -306,6 +306,76 @@ export async function createProduct(
     error: "",
   };
 }
+export async function deleteCategory(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  categoryId: string
+) {
+  const existingCategory = await prisma.category.findUnique({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  if (!existingCategory) {
+    return {
+      ...prevState,
+      status: "error",
+      error: "Category Not Found",
+    };
+  }
+
+  await prisma.category.delete({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
+    message: "Category deleted successfully",
+  };
+}
+
+export async function deleteProduct(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  productId: string
+) {
+  const existingProduct = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!existingProduct) {
+    return {
+      ...prevState,
+      status: "error",
+      error: "Product Not Found",
+    };
+  }
+
+  await prisma.product.delete({
+    where: {
+      id: productId,
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
+    message: "Product deleted successfully",
+  };
+}
+
 export async function getProducts() {
   const products = await prisma.product.findMany({
     select: {
@@ -470,4 +540,73 @@ export async function createEmployee(
     status: "ok",
     error: "",
   };
+}
+
+export async function getSalaries(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const { month, year } = Object.fromEntries(formData.entries());
+  const parsedMonth = parseInt(month as string, 10);
+  const parsedYear = parseInt(year as string, 10);
+
+  if (!parsedMonth || !parsedYear) {
+    return {
+      ...prevState,
+      status: "error",
+      error: "Month and year are required.",
+    };
+  }
+
+  const employees = await prisma.user.findMany({
+    include: {
+      salaries: {
+        where: {
+          month: parsedMonth,
+          year: parsedYear,
+        },
+        select: {
+          id: true,
+          amount: true,
+          paymentDate: true,
+        },
+      },
+    },
+  });
+
+  return {
+    ...prevState,
+    status: "ok",
+    error: "",
+    data: employees.map((employee) => ({
+      id: employee.id,
+      name: employee.name,
+      email: employee.email,
+      phone: employee.phone,
+      salary: employee.salaries[0]?.amount || "Not Approved",
+      salaryId: employee.salaries[0]?.id || null,
+    })),
+  };
+}
+export async function approveSalaries(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  selectedIds: string[]
+) {
+  await prisma.salary.updateMany({
+    where: {
+      id: {
+        in: selectedIds,
+      },
+    },
+    data: {
+      paymentDate: new Date(),
+    },
+  });
+  return { ...prevState, status: "ok", error: "" };
 }
