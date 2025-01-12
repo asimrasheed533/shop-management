@@ -66,7 +66,7 @@ export default function Checkout() {
           </div>
 
           <button className="checkout__btn">
-            {isPending ? <MoonLoader size={15} color="#000" /> : "isPending"}
+            {isPending ? <MoonLoader size={15} color="#000" /> : "CheckOut"}
           </button>
         </form>
       </div>
