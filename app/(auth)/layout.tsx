@@ -3,7 +3,9 @@ import { redirect } from "next/navigation";
 
 export default async function AuthLayout({ children }: any) {
   const token = (await cookies()).get("token")?.value;
-
+  if (!token) {
+    return redirect("/");
+  }
   if (token) {
     const user = JSON.parse(token);
 
