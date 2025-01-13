@@ -4,16 +4,39 @@ import PageBanner from "@/components/PageBanner";
 import useGetAction from "@/hooks/useGetAction";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// const products = [
-//   { id: 1, image: "/logoMe.png", title: "Product 1", price: 200 },
-//   { id: 2, image: "/logoMe.png", title: "Product 2", price: 300 },
-//   { id: 3, image: "/logoMe.png", title: "Product 3", price: 400 },
-// ];
+import { useState } from "react";
+type Product = {
+  id: string;
+  title: string;
+  price: number;
+  image?: string;
+  quantity?: number;
+};
 export default function Products() {
+  const router = useRouter();
+  const [cart, setCart] = useState<Product[]>([]);
   const { data: products } = useGetAction({
     key: "products",
     action: getProducts,
   });
+  const handleAddToCart = (product: Product): void => {
+    setCart((prev) => {
+      const isProductInCart = prev.find((item) => item.id === product.id);
+      if (isProductInCart) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  // Navigate to Cart Page
+  const goToCart = (): void => {
+    router.push("/cart");
+  };
 
   return (
     <>
@@ -63,7 +86,7 @@ function ProductsItem({
 }) {
   const router = useRouter();
   return (
-    <button onClick={() => router.push("/products")} className="category__item">
+    <div className="category__item">
       <Image
         className="category__item__image"
         src={image}
@@ -96,6 +119,6 @@ function ProductsItem({
       >
         Add to Cart
       </button>
-    </button>
+    </div>
   );
 }
