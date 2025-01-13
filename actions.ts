@@ -248,7 +248,7 @@ export async function createCategory(
 export async function createProduct(
   prevState: {
     status: string | null;
-    error: "";
+    error: string;
   },
   formData: FormData
 ) {
