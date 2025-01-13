@@ -17,7 +17,7 @@ export default function SignUp() {
   const { action, isPending, data } = usePostAction({
     action: register,
     defaultState: { error: "" },
-    onError() {
+    onError: () => {
       toast.error("Account creation failed");
     },
     onSuccess: () => {
