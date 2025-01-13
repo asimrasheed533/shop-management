@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function AddProducts() {
   const [preview, setPreview] = useState<string | null>(null);
-  const { action, isPending, data } = usePostAction({
+  const { action, isPending } = usePostAction({
     action: createProduct,
     defaultState: { error: "" },
     onSuccess: () => {
