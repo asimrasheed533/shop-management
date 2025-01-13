@@ -19,7 +19,7 @@ export default function Home() {
     action: getCategories,
   });
   const filteredProducts = selectedCategory
-    ? products?.filter((product) => product.id === selectedCategory)
+    ? products?.filter((product) => product.categoryId === selectedCategory)
     : products;
 
   return (
@@ -144,13 +144,13 @@ export default function Home() {
   );
 }
 
-function CategoryItem({ name }: { name: string }) {
-  return (
-    <button className="category__item">
-      <div className="category__item__name">{name}</div>
-    </button>
-  );
-}
+// function CategoryItem({ name }: { name: string }) {
+//   return (
+//     <button className="category__item">
+//       <div className="category__item__name">{name}</div>
+//     </button>
+//   );
+// }
 
 function ProductsItem({
   image,
