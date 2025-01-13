@@ -1,7 +1,5 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-// import { products as data } from "@/data/mocks";
-
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";

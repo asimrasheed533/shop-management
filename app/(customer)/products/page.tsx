@@ -1,42 +1,48 @@
 "use client";
+
 import { getProducts } from "@/actions";
 import PageBanner from "@/components/PageBanner";
 import useGetAction from "@/hooks/useGetAction";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-type Product = {
-  id: string;
-  title: string;
-  price: number;
-  image?: string;
-  quantity?: number;
-};
+
+// const cart = JSON.stringify({
+//   "23232": 2,
+//   "34343": 1,
+// });
+
+// const addToCart = () => {
+//   const newCart = {
+//     ...JSON.parse(cart),
+//     "45454": 3,
+//   };
+// };
+
+// const updateCart = (id, action) => {
+//   const newCart = JSON.parse(cart);
+
+//   if (action === "decrease") {
+//     newCart[id]--;
+//   } else if (action === "increase") {
+//     newCart[id]++;
+//   }
+// };
+
+// const removeFromCart = (id) => {
+//   const newCart = JSON.parse(cart);
+//   delete newCart[id];
+// };
+
+// const products = Object.keys(cart).map()
+
+// const productCount=(id)=>{
+//   return cart[id];
+// }
+
 export default function Products() {
-  const router = useRouter();
-  const [cart, setCart] = useState<Product[]>([]);
-  const { data: products } = useGetAction({
+  const { data: products, isLoading } = useGetAction({
     key: "products",
     action: getProducts,
   });
-  const handleAddToCart = (product: Product): void => {
-    setCart((prev) => {
-      const isProductInCart = prev.find((item) => item.id === product.id);
-      if (isProductInCart) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  // Navigate to Cart Page
-  const goToCart = (): void => {
-    router.push("/cart");
-  };
 
   return (
     <>
@@ -84,7 +90,6 @@ function ProductsItem({
   name: string;
   price: number;
 }) {
-  const router = useRouter();
   return (
     <div className="category__item">
       <Image

@@ -1,20 +1,19 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
 import ListingTable from "@/components/ListingTable";
-import Link from "next/link";
+import { Order as data } from "@/data/mocks";
+
 import React, { useState } from "react";
 import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
 import useGetAction from "@/hooks/useGetAction";
-import { getOrder } from "@/actions";
 export default function Orders() {
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const { data } = useGetAction({
-    key: "orders",
-    action: getOrder,
-  });
-  console.log("data", data);
+  // const { data } = useGetAction({
+  //   key: "orders",
+  //   action: getOrder,
+  // });
   return (
     <>
       <div className="listing__page">
@@ -23,7 +22,7 @@ export default function Orders() {
           headerItems={headerItems.Orders}
           selectedRows={selectedRows}
         >
-          {data?.orders?.map((item) => (
+          {data?.map((item) => (
             <div className="listing__page__table__content__row" key={item.id}>
               <div className="listing__page__table__content__row__entry checkbox">
                 <ListingCheckbox
@@ -55,7 +54,7 @@ export default function Orders() {
                 {item.phone}
               </div>
               <div className="listing__page__table__content__row__entry">
-                {item.createdAt.toLocaleDateString()}
+                {item.createdAt}
               </div>
             </div>
           ))}

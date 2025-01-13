@@ -22,3 +22,12 @@ export const Employees = Array.from({ length: 30 }, (_, index) => ({
   salary: faker.finance.amount().toString(),
   status: faker.helpers.arrayElement(["active", "inactive"]),
 }));
+export const Order = Array.from({ length: 30 }, (_, index) => ({
+  id: faker.string.uuid(),
+  name: faker.person.firstName(),
+  image: faker.image.avatar(),
+  email: faker.internet.email(),
+  phone: faker.phone.number(),
+  status: faker.helpers.arrayElement(["active", "inactive"]),
+  createdAt: faker.date.toString(),
+}));

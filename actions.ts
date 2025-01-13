@@ -391,23 +391,7 @@ export async function getProducts() {
     status: "ok",
   };
 }
-export async function getOrder() {
-  const orders = await prisma.customer.findMany({
-    select: {
-      id: true,
-      address: true,
-      createdAt: true,
-      email: true,
-      name: true,
-      phone: true,
-    },
-  });
 
-  return {
-    orders,
-    status: "ok",
-  };
-}
 export async function getCategories() {
   const category = await prisma.category.findMany({
     select: {

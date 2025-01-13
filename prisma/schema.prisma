@@ -48,10 +48,8 @@ model Product {
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  orders      Order?     @relation(fields: [orderId], references: [id], onDelete: SetNull)
   orderId     String?
-  quantity    String?
-  Cart        Cart[]    
+  quantity    String?   
 }
 
 model Category {
@@ -62,15 +60,8 @@ id        String       @id @default(cuid()) @map("_id")
   updatedAt DateTime  @updatedAt
   Product   Product[]
 }
-model Cart {
-  id         String     @id @default(cuid()) @map("_id")
-  userId     String
-  productId  String
-  quantity   Int        @default(1)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
+
+
 
 model Salary {
   id        String   @id @default(cuid()) @map("_id")
@@ -80,17 +71,6 @@ model Salary {
   month            Int
   year             Int
   amount           Float
-}
-model Order {
-id        String       @id @default(cuid()) @map("_id")
-  firstName String?
-  lastName  String?
-  cityTown  String?
-  number    String?
-  email     String?
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
 }
 
 
