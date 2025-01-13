@@ -18,7 +18,7 @@ export default function SignIn() {
       emailError: null,
       passwordError: null,
     },
-    onError() {
+    onError: () => {
       toast.error("Account signIn failed");
     },
     onSuccess: () => {
