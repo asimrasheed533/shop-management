@@ -339,10 +339,18 @@ export async function getProducts() {
       price: true,
       image: true,
       createdAt: true,
+      category: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 
-  return products;
+  return products.map((product) => ({
+    ...product,
+    category: product.category.name,
+  }));
 }
 
 export async function createCategory(

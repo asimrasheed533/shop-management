@@ -6,7 +6,8 @@
     },
     { "key": "image", "name": " Image" },
     { "key": "price", "name": "Price" },
-    { "key": "created_at", "name": "Created At" }
+    { "key": "created_at", "name": "Created At" },
+    { "key": "Category", "name": "Category" }
   ],
   "Orders": [
     { "key": "name", "name": "Order Id" },

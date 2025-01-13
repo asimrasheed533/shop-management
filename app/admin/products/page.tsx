@@ -108,6 +108,9 @@ export default function Products() {
               <div className="listing__page__table__content__row__entry">
                 {item.createdAt.toLocaleDateString()}
               </div>
+              <div className="listing__page__table__content__row__entry">
+                {item.category}
+              </div>
             </div>
           ))}
         </ListingTable>

@@ -7,7 +7,7 @@ import "@/style/home.scss";
 import Image from "next/image";
 
 export default function Home() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { data: products, isLoading: loadingProducts } = useGetAction({
     key: "products",
@@ -81,8 +81,7 @@ export default function Home() {
           {categories?.category?.map((category) => (
             <button
               key={category.id}
-              // onClick={() => setSelectedCategory(category.id)}
-
+              onClick={() => setSelectedCategory(category.id)}
               style={{
                 padding: "10px 20px",
                 fontSize: "16px",
