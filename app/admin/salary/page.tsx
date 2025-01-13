@@ -22,7 +22,7 @@ export default function Salary() {
   const { action, isPending } = usePostAction({
     action: approveSalaries,
     defaultState: { error: "" },
-    onError() {
+    onError: () => {
       toast.error("Failed to approve salaries!");
     },
     onSuccess: () => {
