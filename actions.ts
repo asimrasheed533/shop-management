@@ -18,7 +18,6 @@ export async function setPassword(
   const token = formData.get("token") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
-  console.log("FormData received:", Object.fromEntries(formData.entries()));
 
   if (password !== confirmPassword) {
     return {
@@ -498,9 +497,8 @@ export async function createEmployee(
       status: "error",
     };
   }
-  const token = randomBytes(32).toString("hex");
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       name,
       email,
@@ -524,7 +522,8 @@ export async function createEmployee(
     },
   });
 
-  const resetLink = `${baseURL}/set-password?token=${token}`;
+  const resetLink = `${baseURL}/set-password?token=${user.id}`;
+
   await transporter.sendMail({
     from: "devscot@gmail.com",
     to: email,
