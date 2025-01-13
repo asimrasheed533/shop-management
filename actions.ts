@@ -341,6 +341,7 @@ export async function getProducts() {
       createdAt: true,
       category: {
         select: {
+          id: true,
           name: true,
         },
       },
@@ -350,6 +351,7 @@ export async function getProducts() {
   return products.map((product) => ({
     ...product,
     category: product.category.name,
+    categoryId: product.category.id,
   }));
 }
 
