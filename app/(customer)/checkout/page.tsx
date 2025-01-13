@@ -10,7 +10,7 @@ export default function Checkout() {
   const { action, isPending } = usePostAction({
     action: createCustomer,
     defaultState: { error: "" },
-    onError() {
+    onError: () => {
       toast.error("Account creation failed");
     },
     onSuccess: () => {
