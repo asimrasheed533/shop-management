@@ -200,51 +200,7 @@ export async function createCustomer(
     status: "error",
   };
 }
-export async function createCategory(
-  prevState: {
-    status: string | null;
-    error: string;
-  },
-  formData: FormData
-) {
-  const name = formData.get("name") as string;
-  const image = formData.get("image") as File;
 
-  if (!name) {
-    return { ...prevState, nameError: "Name is required", status: "error" };
-  }
-
-  let pictureUrl = "";
-
-  if (image && image.name !== "undefined") {
-    const fileName = image.name;
-    const filePath = `./public/uploads/${fileName}`;
-
-    try {
-      await fs.access("./public/uploads");
-    } catch {
-      await fs.mkdir("./public/uploads");
-    }
-
-    const fileBuffer = await image.arrayBuffer();
-
-    await fs.writeFile(filePath, Buffer.from(fileBuffer));
-
-    pictureUrl = filePath.replace("./public", "");
-  }
-  await prisma.category.create({
-    data: {
-      name,
-      image: pictureUrl,
-    },
-  });
-
-  return {
-    ...prevState,
-    status: "ok",
-    error: "",
-  };
-}
 export async function createProduct(
   prevState: {
     status: string | null;
@@ -386,10 +342,63 @@ export async function getProducts() {
     },
   });
 
+  return products;
+}
+
+export async function createCategory(
+  prevState: {
+    status: string | null;
+    error: string;
+  },
+  formData: FormData
+) {
+  const name = formData.get("name") as string;
+  const image = formData.get("image") as File;
+
+  if (!name) {
+    return { ...prevState, nameError: "Name is required", status: "error" };
+  }
+
+  let pictureUrl = "";
+
+  if (image && image.name !== "undefined") {
+    const fileName = image.name;
+    const filePath = `./public/uploads/${fileName}`;
+
+    try {
+      await fs.access("./public/uploads");
+    } catch {
+      await fs.mkdir("./public/uploads");
+    }
+
+    const fileBuffer = await image.arrayBuffer();
+
+    await fs.writeFile(filePath, Buffer.from(fileBuffer));
+
+    pictureUrl = filePath.replace("./public", "");
+  }
+  await prisma.category.create({
+    data: {
+      name,
+      image: pictureUrl,
+    },
+  });
+
   return {
-    products,
+    ...prevState,
     status: "ok",
+    error: "",
   };
+}
+
+export async function getCategoriesId() {
+  const categories = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  return categories;
 }
 
 export async function getCategories() {
@@ -592,4 +601,26 @@ export async function approveSalaries(
     },
   });
   return { ...prevState, status: "ok", error: "" };
+}
+
+export async function saveCart(
+  cart: Record<string, number>,
+  prevState: {
+    status: string | null;
+    error: string;
+  }
+) {
+  const totalProducts = Object.keys(cart).length;
+  const cookieStore = await cookies();
+  cookieStore.set(
+    "cart",
+    JSON.stringify({
+      totalProducts,
+    })
+  );
+  return {
+    ...prevState,
+    status: "error",
+    error: "Failed to save cart. Please try again.",
+  };
 }

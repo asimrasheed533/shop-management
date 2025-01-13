@@ -2,8 +2,9 @@
 import "@/style/dashboard.scss";
 import Input from "@/components/Input";
 import usePostAction from "@/hooks/usePostAction";
-import { createCategory, createProduct } from "@/actions";
+import { createProduct, getCategoriesId } from "@/actions";
 import { useState } from "react";
+import useGetAction from "@/hooks/useGetAction";
 
 export default function AddProducts() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -13,6 +14,11 @@ export default function AddProducts() {
     onSuccess: () => {
       alert("Product added successfully");
     },
+  });
+
+  const { data: categories } = useGetAction({
+    key: "category",
+    action: getCategoriesId,
   });
 
   return (
@@ -42,34 +48,6 @@ export default function AddProducts() {
             }}
           >
             <div style={{ textAlign: "center" }}>
-              {preview ? (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  style={{
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                    border: "1px solid #ddd",
-                    marginBottom: "10px",
-                  }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "1px dashed #aaa",
-                    borderRadius: "8px",
-                    marginBottom: "10px",
-                    color: "#aaa",
-                  }}
-                >
-                  No image selected
-                </div>
-              )}
               <input
                 type="file"
                 accept="image/*"
@@ -80,7 +58,25 @@ export default function AddProducts() {
           </div>
           <div className="input__row">
             <Input label="Product Title" type="text" name="title" required />
-            <Input label="Category Category" type="text" name="categoryId" />
+            <select
+              name="categoryId"
+              id="category"
+              style={{
+                width: "100%",
+                height: "40px",
+                padding: "0 15px",
+                backgroundColor: "#fff",
+                borderRadius: "5px",
+                borderColor: "#ccc",
+              }}
+            >
+              <option>Select Category</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="input__row">
             <Input label="Price" type="text" name="price" required />

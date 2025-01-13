@@ -1,49 +1,32 @@
 "use client";
 
-import { getProducts } from "@/actions";
+import { getProducts, saveCart } from "@/actions";
 import PageBanner from "@/components/PageBanner";
 import useGetAction from "@/hooks/useGetAction";
+import usePostAction from "@/hooks/usePostAction";
 import Image from "next/image";
-
-// const cart = JSON.stringify({
-//   "23232": 2,
-//   "34343": 1,
-// });
-
-// const addToCart = () => {
-//   const newCart = {
-//     ...JSON.parse(cart),
-//     "45454": 3,
-//   };
-// };
-
-// const updateCart = (id, action) => {
-//   const newCart = JSON.parse(cart);
-
-//   if (action === "decrease") {
-//     newCart[id]--;
-//   } else if (action === "increase") {
-//     newCart[id]++;
-//   }
-// };
-
-// const removeFromCart = (id) => {
-//   const newCart = JSON.parse(cart);
-//   delete newCart[id];
-// };
-
-// const products = Object.keys(cart).map()
-
-// const productCount=(id)=>{
-//   return cart[id];
-// }
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Products() {
+  const router = useRouter();
+  const [cart, setCart] = useState<Record<string, number>>({});
+
   const { data: products, isLoading } = useGetAction({
     key: "products",
     action: getProducts,
   });
 
+  // const { actionCallback, isPending } = usePostAction({
+  //   action: saveCart,
+  //   defaultState: { error: "" },
+  //   onError: () => {
+  //     toast.error("Failed to add product to cart.");
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("Product added to cart!");
+  //   },
+  // });
   return (
     <>
       <PageBanner title="Products" />
@@ -57,26 +40,47 @@ export default function Products() {
       >
         Our Products
       </h2>
-      <div
-        className="products__warper"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "30px",
-          width: "100%",
-          marginBottom: "30px",
-        }}
-      >
-        {products?.products?.map((product) => (
-          <ProductsItem
-            key={product.id}
-            image={product.image ?? "/defaultImage.png"}
-            name={product.title ?? "Untitled"}
-            price={product.price}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "20px",
+              fontWeight: "500",
+              color: "#555",
+            }}
+          >
+            Loading products...
+          </p>
+        </div>
+      ) : (
+        <div
+          className="products__warper"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "30px",
+            width: "100%",
+            marginBottom: "30px",
+          }}
+        >
+          {products?.map((product) => (
+            <ProductsItem
+              key={product.id}
+              image={product.image ?? "/defaultImage.png"}
+              name={product.title ?? "Untitled"}
+              price={product.price}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 }

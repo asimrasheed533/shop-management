@@ -4,7 +4,6 @@ import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
 import useGetAction from "@/hooks/useGetAction";
 import { deleteProduct, getProducts } from "@/actions";
@@ -60,7 +59,7 @@ export default function Products() {
           selectedRows={selectedRows}
           totalPages={10}
         >
-          {data?.products?.map((item) => (
+          {data?.map((item) => (
             <div className="listing__page__table__content__row" key={item.id}>
               <button
                 onClick={() => actionCallback(item.id)}
