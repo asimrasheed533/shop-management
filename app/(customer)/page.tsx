@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-import { getCategories, getProducts } from "@/actions";
+import { getCategories, getProducts, saveCart } from "@/actions";
 import useGetAction from "@/hooks/useGetAction";
 
 import "@/style/home.scss";
 import Image from "next/image";
+import usePostAction from "@/hooks/usePostAction";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -13,6 +14,26 @@ export default function Home() {
     key: "products",
     action: getProducts,
   });
+
+  const { actionCallback } = usePostAction({
+    action: saveCart,
+    onSuccess: () => {
+      alert("Item added to cart!");
+    },
+    onError: () => {
+      alert("Failed to add item to cart. Please try again.");
+    },
+  });
+
+  const handleAddToCart = async (product: {
+    id: string;
+    [key: string]: any;
+  }) => {
+    5;
+    actionCallback({
+      [product.id]: 1,
+    });
+  };
 
   const { data: categories, isLoading: loadingCategories } = useGetAction({
     key: "category",
@@ -136,6 +157,7 @@ export default function Home() {
               image={product.image ?? "/defaultImage.png"}
               name={product.title ?? "Untitled"}
               price={product.price}
+              onAddToCart={() => handleAddToCart(product)}
             />
           ))}
         </div>
@@ -144,22 +166,16 @@ export default function Home() {
   );
 }
 
-// function CategoryItem({ name }: { name: string }) {
-//   return (
-//     <button className="category__item">
-//       <div className="category__item__name">{name}</div>
-//     </button>
-//   );
-// }
-
 function ProductsItem({
   image,
   name,
   price,
+  onAddToCart,
 }: {
   image: string;
   name: string;
   price: number;
+  onAddToCart: () => void;
 }) {
   return (
     <div className="category__item">
@@ -192,6 +208,7 @@ function ProductsItem({
           cursor: "pointer",
         }}
         className="add__to__cart"
+        onClick={onAddToCart}
       >
         Add to Cart
       </button>
