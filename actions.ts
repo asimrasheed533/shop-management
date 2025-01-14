@@ -614,20 +614,27 @@ export async function approveSalaries(
 }
 
 export async function saveCart(
-  cart: Record<string, number>,
   prevState: {
     status: string | null;
     error: string;
-  }
+  },
+  cart: Record<string, number>
 ) {
   const totalProducts = Object.keys(cart).length;
   const cookieStore = await cookies();
+
   cookieStore.set(
     "cart",
     JSON.stringify({
+      items: cart,
       totalProducts,
     })
   );
+
+  console.log("Cookies set successfully:", {
+    items: cart,
+    totalProducts,
+  });
   return {
     ...prevState,
     status: "error",
