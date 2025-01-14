@@ -31,17 +31,65 @@ export default function Cart() {
         <CartItem img="/logoMe.png" name="Product 1" price={999} />
         <CartItem img="/logoMe.png" name="Product 1" price={999} />
       </div>
-      <div className="checkout">
-        <button
-          onClick={() => router.push("/checkout")}
-          className="checkout__heading"
-        >
-          Checkout
-        </button>
-        <div className="checkout__total__price">
-          <div className="checkout__total__price__heading">Total Price</div>
-          <div className="checkout__total__price__value">Rs: 3997</div>
+      <div className="checkout__container__form">
+        <div className="checkout">
+          <div className="checkout__total__price">
+            <div className="checkout__total__price__heading">Total Price</div>
+            <div className="checkout__total__price__value">Rs: 3997</div>
+          </div>
         </div>
+        <form
+          style={{
+            width: "50%",
+          }}
+          className="checkout__content__warper__from"
+        >
+          <div className="checkout__input__warper__name__entry">
+            <div className="checkout__input__label">Name</div>
+            <input
+              name="name"
+              className="checkout__input__entry__name"
+              type="text"
+              placeholder="Name"
+              required
+            />
+          </div>
+          <div className="checkout__input__warper__name__entry">
+            <div className="checkout__input__label">Email</div>
+            <input
+              name="email"
+              className="checkout__input__entry__name"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div className="checkout__input__warper__name__entry">
+            <div className="checkout__input__label">Phone Number</div>
+            <input
+              name="phone"
+              className="checkout__input__entry__name"
+              type="tel"
+              required
+              placeholder="Phone Number"
+            />
+          </div>
+          <div className="checkout__input__warper__name__entry">
+            <div className="checkout__input__label">Address</div>
+            <input
+              name="address"
+              className="checkout__input__entry__name"
+              type="text"
+              required
+              placeholder="Address"
+            />
+          </div>
+
+          <button className="checkout__btn">
+            {/* {isPending ? <MoonLoader size={15} color="#000" /> : "CheckOut"} */}
+            CheckOut
+          </button>
+        </form>
       </div>
     </>
   );
