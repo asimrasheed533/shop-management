@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import "@/style/header.scss";
 import Image from "next/image";
-import menuLogo from "@/public/menuLogo.png";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import SearchInput from "./SearchInput";
 
 export default function Header({ token }: { token: string | null }) {
   const router = useRouter();
@@ -37,59 +36,16 @@ export default function Header({ token }: { token: string | null }) {
         }}
       >
         <div className="nav__bar__container">
-          {isOpenMenu ? (
-            <div className="nav__entry">
-              <Link
-                href="/"
-                className={`nav__entry__item ${
-                  pathname === "/" ? "active" : ""
-                }`}
-              >
-                Home
-              </Link>
+          <button onClick={() => router.push("/")} className="nav__log">
+            <Image
+              width={100}
+              height={100}
+              className="nav__log__image"
+              src="/logoMe.png"
+              alt="logo"
+            />
+          </button>
 
-              <Link
-                href="/products"
-                className={`nav__entry__item ${
-                  pathname === "/reviews" ? "active" : ""
-                }`}
-              >
-                Shop Now
-              </Link>
-
-              <Link
-                href="/contact"
-                className={`nav__entry__item ${
-                  pathname === "/contact" ? "active" : ""
-                }`}
-              >
-                Contact
-              </Link>
-              <div className="menu__close__warper">
-                <div className="menu__close__title">Menu</div>
-                <div
-                  onClick={() => setIsOpenMenu(false)}
-                  className="menu__close"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="feather feather-x"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          ) : null}
           <button
             onClick={() => setIsOpenMenu(!isOpenMenu)}
             className="header__container__menu__icon"
@@ -106,7 +62,7 @@ export default function Header({ token }: { token: string | null }) {
               <line y1="6.5" x2="14" y2="6.5" stroke="#C4C4C4" />
             </svg>
           </button>
-          <button onClick={() => router.push("/")} className="nav__log">
+          <button onClick={() => router.push("/")} className="nav__log__mobile">
             <Image
               width={100}
               height={100}
@@ -115,8 +71,10 @@ export default function Header({ token }: { token: string | null }) {
               alt="logo"
             />
           </button>
+
           <div className="nav__register">
             <div className="nav__register__btns">
+              <SearchInput />
               <button
                 onClick={() => router.push("/cart")}
                 className="nav__register__cart"
