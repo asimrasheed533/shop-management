@@ -74,3 +74,41 @@
   text-transform: capitalize;
   font-size: 0.8rem;
 }
+.search__bar__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s ease;
+  border: none;
+  background-color: var(--lightBlue);
+  border-radius: 25px;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+}
+.search__bar__wrapper.expanded {
+  width: 200px;
+  padding: 0.4em;
+}
+.search__icon__button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+.search__input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  width: 100%;
+  font-size: 14px;
+  transition: width 0.3s ease;
+  background-color: var(--lightBlue);
+  color: var(--white);
+}
+.search__icon__button svg {
+  color: white;
+}
+.search__bar__wrapper:not(.expanded) .search__input {
+  display: none;
+}

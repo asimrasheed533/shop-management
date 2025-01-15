@@ -1,6 +1,6 @@
 "use client";
 import headerItems from "@/data/headerItems.json";
-// import { Employees as data } from "@/data/mocks";
+import { parseAsString, useQueryState } from "nuqs";
 import ListingTable from "@/components/ListingTable";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -9,12 +9,17 @@ import useGetAction from "@/hooks/useGetAction";
 import { deleteEmployee, getEmployee } from "@/actions";
 import usePostAction from "@/hooks/usePostAction";
 import { toast } from "react-toastify";
+import SearchInput from "@/components/SearchInput";
 
 export default function Employee() {
   const router = useRouter();
   const pathname = usePathname();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [page, setPage] = useState(3);
+
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("")
+  );
 
   const { data, mutate } = useGetAction({
     key: "category",
@@ -24,7 +29,7 @@ export default function Employee() {
   const { actionCallback } = usePostAction({
     action: deleteEmployee,
     onSuccess: () => {
-      toast.success("Order Placed successfully");
+      toast.success("Employee Add successfully");
       router.refresh();
       mutate();
     },
@@ -53,6 +58,7 @@ export default function Employee() {
               Add Employee
             </Link>
           </div>
+          <SearchInput value={search} onChange={setSearch} />
         </div>
         <ListingTable
           data={[]}
@@ -60,55 +66,61 @@ export default function Employee() {
           selectedRows={selectedRows}
           totalPages={10}
         >
-          {data?.employee?.map((item) => (
-            <div className="listing__page__table__content__row" key={item.id}>
-              <button
-                onClick={() => actionCallback(item.id)}
-                style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                className="listing__page__table__content__row__entry checkbox"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-trash-2"
+          {data?.employee
+            ?.filter(
+              (item) =>
+                item.name.toLowerCase().includes(search.toLowerCase()) ||
+                item.email.toLowerCase().includes(search.toLowerCase())
+            )
+            .map((item) => (
+              <div className="listing__page__table__content__row" key={item.id}>
+                <button
+                  onClick={() => actionCallback(item.id)}
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  className="listing__page__table__content__row__entry checkbox"
                 >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  <line x1="10" y1="11" x2="10" y2="17"></line>
-                  <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-trash-2"
+                  >
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
 
-              <div className="listing__page__table__content__row__entry">
-                {item.name}
+                <div className="listing__page__table__content__row__entry">
+                  {item.name}
+                </div>
+                <div
+                  className="listing__page__table__content__row__entry"
+                  style={{
+                    width: "300px",
+                  }}
+                >
+                  {item.email}
+                </div>
+                <div className="listing__page__table__content__row__entry">
+                  {item.phone}
+                </div>
+                <div className="listing__page__table__content__row__entry">
+                  {item.salary}
+                </div>
               </div>
-              <div
-                className="listing__page__table__content__row__entry"
-                style={{
-                  width: "300px",
-                }}
-              >
-                {item.email}
-              </div>
-              <div className="listing__page__table__content__row__entry">
-                {item.phone}
-              </div>
-              <div className="listing__page__table__content__row__entry">
-                {item.salary}
-              </div>
-            </div>
-          ))}
+            ))}
         </ListingTable>
       </div>
     </>

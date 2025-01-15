@@ -25,7 +25,7 @@ export default [
   },
   {
     label: "Employee",
-    href: "/admin",
+    href: "",
     icon: <GeneralIcon />,
     children: [
       {

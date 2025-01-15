@@ -463,6 +463,11 @@ export async function deleteEmployee(
 
 export async function getEmployee() {
   const employee = await prisma.user.findMany({
+    where: {
+      role: {
+        not: "ADMIN",
+      },
+    },
     select: {
       id: true,
       name: true,
@@ -641,3 +646,36 @@ export async function saveCart(
     error: "Failed to save cart. Please try again.",
   };
 }
+
+// const cart = JSON.stringify({
+//   "23232": 2,
+//   "34343": 1,
+// });
+
+// const addToCart = () => {
+//   const newCart = {
+//     ...JSON.parse(cart),
+//     "45454": 3,
+//   };
+// };
+
+// const updateCart = (id, action) => {
+//   const newCart = JSON.parse(cart);
+
+//   if (action === "decrease") {
+//     newCart[id]--;
+//   } else if (action === "increase") {
+//     newCart[id]++;
+//   }
+// };
+
+// const removeFromCart = (id) => {
+//   const newCart = JSON.parse(cart);
+//   delete newCart[id];
+// };
+
+// const products = Object.keys(cart).map()
+
+// const productCount=(id)=>{
+//   return cart[id];
+// }
