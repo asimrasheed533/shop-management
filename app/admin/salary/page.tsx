@@ -10,8 +10,6 @@ import { approveSalaries, getPendingSalaries } from "@/actions";
 
 export default function Salary() {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  // const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
-  // const currentYear = new Date().getFullYear();
 
   const { data, mutate } = useGetAction({
     action: () =>
