@@ -3,52 +3,48 @@
 import headerItems from "@/data/headerItems.json";
 import ListingTable from "@/components/ListingTable";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import useGetAction from "@/hooks/useGetAction";
 import usePostAction from "@/hooks/usePostAction";
 import { toast } from "react-toastify";
-import { approveSalaries, getEmployee } from "@/actions";
+import { approveSalaries, getPendingSalaries } from "@/actions";
 
 export default function Salary() {
-  const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  // const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  // const currentYear = new Date().getFullYear();
 
   const { data, mutate } = useGetAction({
-    key: "employees",
-    action: getEmployee,
+    action: () =>
+      getPendingSalaries(new Date().getMonth() + 1, new Date().getFullYear()),
+    key: "pending-salaries",
   });
-
-  const { action, isPending } = usePostAction({
+  const { actionCallback, isPending } = usePostAction({
     action: approveSalaries,
-    defaultState: { error: "" },
+    defaultState: {
+      error: "",
+    },
     onError: () => {
       toast.error("Failed to approve salaries!");
     },
     onSuccess: () => {
-      toast.success("LSalaries approved successfully");
+      toast.success("Salaries approved successfully");
       mutate();
     },
   });
-
-  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value ? parseInt(event.target.value, 10) : null;
-    setSelectedMonth(value);
-    mutate();
-  };
 
   return (
     <div className="listing__page">
       <div className="listing__page__header">
         <div className="listing__page__header__actions">
           <button
-            // onClick={}
+            onClick={() => ""}
             className="listing__page__header__actions__button"
+            disabled={isPending}
           >
-            Approve
+            {isPending ? "Approving..." : "Approve"}
           </button>
         </div>
-        <label>
+        {/* <label>
           Month:
           <select name="month" onChange={handleMonthChange}>
             <option value="">Select Month</option>
@@ -58,15 +54,15 @@ export default function Salary() {
               </option>
             ))}
           </select>
-        </label>
+        </label> */}
       </div>
       <ListingTable
-        data={data?.employee || []}
+        data={data?.employees || []}
         headerItems={headerItems.Employees}
         selectedRows={selectedRows}
         totalPages={10}
       >
-        {data?.employee?.map((item) => (
+        {data?.employees?.map((item) => (
           <div className="listing__page__table__content__row" key={item.id}>
             <div className="listing__page__table__content__row__entry checkbox">
               <input
