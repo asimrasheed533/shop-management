@@ -549,25 +549,19 @@ export async function createEmployee(
   };
 }
 
-export async function getSalaries(
-  prevState: {
-    status: string | null;
-    error: string;
-  },
-  formData: FormData
+export async function getPendingSalaries(
+  month: string | number,
+  year: string | number
 ) {
-  const { month, year } = Object.fromEntries(formData.entries());
-  const parsedMonth = parseInt(month as string, 10);
-  const parsedYear = parseInt(year as string, 10);
+  const parsedMonth = Number(month);
+  const parsedYear = Number(year);
 
-  if (!parsedMonth || !parsedYear) {
+  if (!parsedMonth || !parsedYear || parsedMonth < 1 || parsedMonth > 12) {
     return {
-      ...prevState,
       status: "error",
-      error: "Month and year are required.",
+      error: "Valid month (1-12) and year are required.",
     };
   }
-
   const employees = await prisma.user.findMany({
     include: {
       salaries: {
@@ -583,21 +577,13 @@ export async function getSalaries(
       },
     },
   });
-
   return {
-    ...prevState,
+    employees,
     status: "ok",
     error: "",
-    data: employees.map((employee) => ({
-      id: employee.id,
-      name: employee.name,
-      email: employee.email,
-      phone: employee.phone,
-      salary: employee.salaries[0]?.amount || "Not Approved",
-      salaryId: employee.salaries[0]?.id || null,
-    })),
   };
 }
+
 export async function approveSalaries(
   prevState: {
     status: string | null;
