@@ -4,7 +4,6 @@ import prisma from "./lib/prisma";
 import bcryptjs from "bcryptjs";
 import { redirect } from "next/navigation";
 import fs from "fs/promises";
-import { randomBytes } from "crypto";
 import nodemailer from "nodemailer";
 import { baseURL } from "./config";
 
