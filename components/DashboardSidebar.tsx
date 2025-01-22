@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import ClickAwayListener from "react-click-away-listener";
-// import MoonLoader from "react-spinners/MoonLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 export default function DashboardSidebar({ links }: { links: ILinks[] }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
@@ -96,6 +96,9 @@ function SideBarEntry({ entryLink }: { entryLink: any }) {
   const router = useRouter();
 
   const [isLoading, startTransition] = useTransition();
+  const [activeLoadingEntry, setActiveLoadingEntry] = useState<string | null>(
+    null
+  );
 
   return (
     <>
@@ -123,15 +126,15 @@ function SideBarEntry({ entryLink }: { entryLink: any }) {
                 pathname.startsWith(subEntry.href) ? "active" : ""
               }`}
             >
-              {subEntry.icon &&
-                // <span className="sidebar__nav__icon">
-                //   {isLoading ? (
-                //     <MoonLoader size={15} color="#fff" />
-                //   ) : (
-                //     subEntry.icon
-                //   )}
-                // </span>
-                subEntry.icon}
+              {subEntry.icon && (
+                <span className="sidebar__nav__icon">
+                  {isLoading ? (
+                    <MoonLoader size={15} color="#fff" />
+                  ) : (
+                    subEntry.icon
+                  )}
+                </span>
+              )}
 
               <span className="sidebar__nav__text">{subEntry.label}</span>
             </button>
