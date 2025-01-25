@@ -5,6 +5,9 @@ import usePostAction from "@/hooks/usePostAction";
 import { createProduct, getCategoriesId } from "@/actions";
 import { useState } from "react";
 import useGetAction from "@/hooks/useGetAction";
+import Select from "@/components/select";
+import MultiImageUploader from "@/components/MultiImageUploader";
+import Button from "@/components/Button";
 
 export default function AddProducts() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -23,15 +26,17 @@ export default function AddProducts() {
 
   return (
     <>
-      <div className="product__container">
-        <form
-          action={action}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 12,
-          }}
-        >
+      <form
+        className="create__page__body__form"
+        action={action}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <Button />
+        {/* <div className="listing__page__header__actions__button__warper">
           <button
             type="submit"
             disabled={isPending}
@@ -39,53 +44,29 @@ export default function AddProducts() {
           >
             {isPending ? "Loading..." : "Add Category"}
           </button>
-          <div
-            className="input__row"
-            style={{
-              display: "flex",
-              alignContent: "flex-start",
-              justifyContent: "flex-start",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <input
-                type="file"
-                accept="image/*"
-                style={{ marginBottom: "10px" }}
-                name="image"
-              />
-            </div>
+        </div> */}
+        <div className="create__page__body__form__card__body__entry">
+          <div className="create__page__body__form__card__body__entry__label">
+            Images
           </div>
-          <div className="input__row">
-            <Input label="Product Title" type="text" name="title" required />
-            <select
-              name="categoryId"
-              id="category"
-              style={{
-                width: "100%",
-                height: "40px",
-                padding: "0 15px",
-                backgroundColor: "#fff",
-                borderRadius: "5px",
-                borderColor: "#ccc",
-              }}
-            >
-              <option>Select Category</option>
-              {categories?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+          <div className="create__page__body__form__card__body__entry__content">
+            <MultiImageUploader />
           </div>
-          <div className="input__row">
-            <Input label="Price" type="text" name="price" required />
-          </div>
-          <div className="input__row">
-            <Input label="Description" type="text" name="description" />
-          </div>
-        </form>
-      </div>
+        </div>
+
+        <div className="input__row">
+          <Input label="Product Title" type="text" name="title" required />
+          {categories?.map((category) => (
+            <Select key={category.id} name="categoryId" label="Category" />
+          ))}
+        </div>
+        <div className="input__row">
+          <Input label="Price" type="text" name="price" required />
+        </div>
+        <div className="input__row">
+          <Input label="Description" type="text" name="description" />
+        </div>
+      </form>
     </>
   );
 }
