@@ -7,7 +7,6 @@ import { useState } from "react";
 import useGetAction from "@/hooks/useGetAction";
 import Select from "@/components/select";
 import MultiImageUploader from "@/components/MultiImageUploader";
-import Button from "@/components/Button";
 
 export default function AddProducts() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -35,8 +34,7 @@ export default function AddProducts() {
           gap: 12,
         }}
       >
-        <Button />
-        {/* <div className="listing__page__header__actions__button__warper">
+        <div className="listing__page__header__actions__button__warper">
           <button
             type="submit"
             disabled={isPending}
@@ -44,11 +42,8 @@ export default function AddProducts() {
           >
             {isPending ? "Loading..." : "Add Category"}
           </button>
-        </div> */}
+        </div>
         <div className="create__page__body__form__card__body__entry">
-          <div className="create__page__body__form__card__body__entry__label">
-            Images
-          </div>
           <div className="create__page__body__form__card__body__entry__content">
             <MultiImageUploader />
           </div>
@@ -56,9 +51,14 @@ export default function AddProducts() {
 
         <div className="input__row">
           <Input label="Product Title" type="text" name="title" required />
-          {categories?.map((category) => (
-            <Select key={category.id} name="categoryId" label="Category" />
-          ))}
+
+          <Select
+            name="categoryId"
+            options={categories?.map((category) => ({
+              value: category.id,
+              label: category.name,
+            }))}
+          />
         </div>
         <div className="input__row">
           <Input label="Price" type="text" name="price" required />
