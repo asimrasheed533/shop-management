@@ -2,11 +2,9 @@
 import headerItems from "@/data/headerItems.json";
 import ListingTable from "@/components/ListingTable";
 import { Order as data } from "@/data/mocks";
-
 import React, { useState } from "react";
 import ListingCheckbox from "@/components/ListingCheckbox";
 import Image from "next/image";
-import useGetAction from "@/hooks/useGetAction";
 export default function Orders() {
   const [selectedRows, setSelectedRows] = useState([]);
 
